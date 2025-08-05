@@ -1,0 +1,91 @@
+﻿@* @model IEnumerable<DEMO.Models.StockOrderViewModel>
+
+@{
+    ViewData["Title"] = "Add Medication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<h2>Ordered Stock</h2>
+
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+</head>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Order Quantity</th>
+            <th>Date Ordered</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.OrderQuantity</td>
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@item.Status</td>
+                 <td>
+                    <!-- Edit and Delete buttons -->
+                    <a asp-action="EditOrderStock" asp-controller="Pharmacist" asp-route-id="@item.StockID" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="DeleteOrderStock" asp-controller="Pharmacist" asp-route-id="@item.StockID" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+ *@
+
+ @model E_PRESCRIBING_SYSTEM.Models.MedicationOrderViewModel
+
+@{
+    ViewData["Title"] = "Ordered Stock";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<h2>Ordered Stock</h2>
+
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+</head>
+
+<div class="icon-button" onclick="window.location.href='/Pharmacist/OrderStock'">
+    <img src="~/css/LeftArrow.png" alt="Reports">
+    <p>Order Stock</p>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Order Quantity</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stock in Model.StockOrders)
+        {
+            <tr>
+                <td>@stock.Name</td>
+                <td>@stock.OrderQuantity</td>
+                <td>@stock.Date.ToShortDateString()</td>
+                <td>@stock.Status</td>
+                <td>
+                    <!-- Edit and Delete buttons -->
+                    <a asp-action="EditOrderStock" asp-controller="Pharmacist" asp-route-id="@stock.StockID" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="DeleteOrderStock" asp-controller="Pharmacist" asp-route-id="@stock.StockID" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

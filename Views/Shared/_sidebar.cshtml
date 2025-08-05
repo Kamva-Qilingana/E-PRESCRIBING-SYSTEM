@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div>
+     
+   
+        <!-- Include Font Awesome CSS (via CDN) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="/dashboard"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="/appointments"><i class="fa-solid fa-calendar-check"></i> Prsecription</a></li>
+                <li><a href="/settings"><i class="fa-solid fa-cog"></i> Report</a></li>
+                <li><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+
+    @*     @RenderBody() *@
+    </div>
+</body>
+</html>

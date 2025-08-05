@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "Pharmacist Dashboard";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bay Breeze Hospital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .dashboard-container {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .dashboard-card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .dashboard-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card i {
+            font-size: 40px;
+            color: #6a67ce;
+        }
+
+        .dashboard-card h4 {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-label {
+            font-size: 16px;
+            color: #888;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .chart-container {
+            padding: 20px;
+            height: 250px;
+            position: relative;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h2>Bay Breeze Hospital</h2>
+
+        <!-- Dashboard Summary Cards -->
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="dashboard-card">
+                    <i class="fas fa-pills"></i>
+                    <h4>@ViewBag.TotalMedications</h4>
+                    <div class="card-label">Total Medications</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="dashboard-card">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                    <h4>@ViewBag.TotalPrescriptions</h4>
+                    <div class="card-label">Total Prescriptions</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="dashboard-card">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h4>@ViewBag.TotalOrders</h4>
+                    <div class="card-label">Total Stock Orders</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Bar Chart -->
+                <div class="col-md-6 chart-container">
+                    <h5 class="text-center">Stock On Hand per Medication (Bar Chart)</h5>
+                    <canvas id="stockChart"></canvas>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="col-md-6 chart-container">
+                    <h5 class="text-center">Stock Distribution (Pie Chart)</h5>
+                    <canvas id="stockPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.MedicationNames));
+        const quantities = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.StockQuantities));
+
+        // Bar Chart
+        const barCtx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Stock On Hand',
+                    data: quantities,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantity'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Medication Name'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart
+        const pieCtx = document.getElementById('stockPieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Stock Distribution',
+                    data: quantities,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#E7E9ED', '#8BC34A',
+                        '#F44336', '#9C27B0', '#00BCD4', '#CDDC39'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>

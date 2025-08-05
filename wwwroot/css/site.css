@@ -1,0 +1,189 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.hero-text-box {
+    position: absolute;
+    width: 1140px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+header {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(hospital002.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(hospital002.png);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-attachment: fixed;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: lightgrey;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+
+.footer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 1280px;
+    width: 95%;
+    background: #10182F;
+    border-radius: 6px;
+}
+
+    .footer .footer-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 3.5rem;
+        padding: 60px;
+    }
+
+.footer-row .footer-col h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.footer-col .links {
+    margin-top: 20px;
+}
+
+    .footer-col .links li {
+        list-style: none;
+        margin-bottom: 10px;
+    }
+
+        .footer-col .links li a {
+            text-decoration: none;
+            color: #bfbfbf;
+        }
+
+            .footer-col .links li a:hover {
+                color: #fff;
+            }
+
+.footer-col p {
+    margin: 20px 0;
+    color: #bfbfbf;
+    max-width: 300px;
+}
+
+.footer-col form {
+    display: flex;
+    gap: 5px;
+}
+
+.footer-col input {
+    height: 40px;
+    border-radius: 6px;
+    background: none;
+    width: 100%;
+    outline: none;
+    border: 1px solid #7489C6;
+    caret-color: #fff;
+    color: #fff;
+    padding-left: 10px;
+}
+
+    .footer-col input::placeholder {
+        color: #ccc;
+    }
+
+.footer-col form button {
+    background: #fff;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+    .footer-col form button:hover {
+        background: #cecccc;
+    }
+
+.footer-col .icons {
+    display: flex;
+    margin-top: 30px;
+    gap: 30px;
+    cursor: pointer;
+}
+
+    .footer-col .icons i {
+        color: #afb6c7;
+    }
+
+        .footer-col .icons i:hover {
+            color: #fff;
+        }
+
+@media (max-width: 768px) {
+    .footer {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        border-radius: 0;
+    }
+
+        .footer .footer-row {
+            padding: 20px;
+            gap: 1rem;
+        }
+
+    .footer-col form {
+        display: block;
+    }
+
+        .footer-col form :where(input, button) {
+            width: 100%;
+        }
+
+        .footer-col form button {
+            margin: 10px 0 0 0;
+        }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .login-box {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+
+}

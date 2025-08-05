@@ -1,0 +1,34 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Prescription>
+
+@{
+    ViewBag.Title = "Prescription List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Prescriptions</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Medication</th>
+            <th>Quantity</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prescription in Model)
+        {
+            <tr>
+                <td>@prescription.PatientProfile.PatientName</td>
+                <td>@prescription.PharmacyMedication.Name</td>
+                <td>@prescription.Quantity</td>
+                <td>@prescription.PrescriptionDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a href="@Url.Action("Create","Surgeon")" class="btn btn-primary">Add Prescription</a>
+</p>

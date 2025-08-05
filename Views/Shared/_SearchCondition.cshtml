@@ -1,0 +1,22 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Condition>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var med in Model)
+    {
+        <tr>
+            <td>@med.ConditionID</td>
+            <td>@med.Diagnosis</td>
+            <td>
+                <a asp-controller="Pharmacist" asp-action="Update" asp-route-id="@med.ConditionID">Update</a>
+                <a asp-controller="Pharmacist" asp-action="Delete" asp-route-id="@med.ConditionID">Delete</a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="3">No results found.</td>
+    </tr>
+}

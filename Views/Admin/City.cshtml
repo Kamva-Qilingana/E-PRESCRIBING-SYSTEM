@@ -1,0 +1,169 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.CityViewModel
+
+@{
+    ViewData["Title"] = "Add City";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<h2>Add City</h2>
+
+ <div>
+        <a href='@Url.Action("AdminDashboard", "Admin")'>Back</a>
+    </div>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@using (Html.BeginForm("City", "Admin", FormMethod.Post))
+{
+    <div class="icon-button" onclick="window.location.href='/Admin/CityList'">
+        <img src="~/css/Condition.png" alt="Reports">
+        <p>Cities</p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CityName)
+        @Html.TextBoxFor(m => m.CityName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ProvinceID)
+        @Html.DropDownListFor(m => m.ProvinceID, Model.Provinces, "Select Province", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add City</button>
+
+}
+
+<!-- list Active Ingredients Stock Modal -->
+<div id="listCityModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('listCityModal')">&times;</span>
+        <!-- Active Ingredient table content -->
+        <h2>List Of City</h2>
+
+        <form id="searchForm" asp-action="CityList" asp-controller="Admin" method="get">
+            <input type="text" name="searchText" placeholder="Search">
+            <input type="submit" value="Search">
+        </form>
+
+
+
+
+        <div class="form-container">
+
+            <div class="table-container">
+                <h2>City List</h2>
+                <a href="@Url.Action("City", "Admin")">Add City</a>
+
+                @if (Model.Citys != null && Model.Citys.Any())
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>City ID</th>
+                                <th>City Name</th>
+                                <th>Province Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var city in Model.Citys)
+                            {
+                                <tr>
+                                    <td>@city.CityID</td>
+                                    <td>@city.CityName</td>
+                                    <td>@city.Province?.ProvinceName</td> <!-- Display the province name -->
+                                    <td>
+                                        <a asp-controller="Admin" asp-action="UpdateCity" asp-route-id="@city.CityID">Update</a>
+                                        <a asp-controller="Admin" asp-action="DeleteCity" asp-route-id="@city.CityID">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div>No cities found.</div>
+                }
+
+                </table>
+                @* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> *@
+
+                <script>
+                    // Function to open the modal
+                    function openModal(modalId) {
+                        var modal = document.getElementById(modalId);
+                        modal.style.display = "block";
+                    }
+
+                    // Function to close the modal
+                    function closeModal(modalId) {
+                        var modal = document.getElementById(modalId);
+                        modal.style.display = "none";
+                    }
+
+                    // Close the modal when the user clicks outside of it
+                    window.onclick = function (event) {
+                        var modal = document.getElementById('listCityModal');
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    // Function to open the modal and load cities
+                    function openModalAndLoadCities(modalId) {
+                        var modal = document.getElementById(modalId);
+                        modal.style.display = "block";
+
+                        // AJAX call to load cities
+                        $.ajax({
+                            type: 'GET',
+                            url: '@Url.Action("SearchCity", "Admin")', // Action method that returns the cities
+                            success: function (response) {
+                                // Populate the table body with the response (list of cities)
+                                $('#searchResults').html(response);
+                            },
+                            error: function () {
+                                alert('An error occurred while fetching cities.');
+                            }
+                        });
+                    }
+
+                    $(document).ready(function () {
+                        $('#searchForm').submit(function (e) {
+                            e.preventDefault(); // Prevent the default form submission
+
+                            $.ajax({
+                                type: 'GET',
+                                url: $(this).attr('action'),
+                                data: $(this).serialize(), // Send the search input value
+                                success: function (response) {
+                                    // Populate the table body with the search results
+                                    $('#searchResults').html(response);
+                                },
+                                error: function () {
+                                    alert('An error occurred while searching.');
+                                }
+                            });
+                        });
+                    });
+
+
+
+
+
+                </script>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

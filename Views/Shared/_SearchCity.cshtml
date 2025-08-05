@@ -1,0 +1,26 @@
+﻿@model List<E_PRESCRIBING_SYSTEM.Models.City>
+
+<tbody id="searchResults">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.CityID</td>
+                <td>@city.CityName</td>
+                <td>@city.Province?.ProvinceName</td> <!-- Display the province name, ensure null check -->
+                <td>
+                    <a asp-controller="Admin" asp-action="UpdateCity" asp-route-id="@city.CityID">Update</a>
+                    <a asp-controller="Admin" asp-action="DeleteCity" asp-route-id="@city.CityID">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No cities found.</td>
+        </tr>
+    }
+</tbody>
+

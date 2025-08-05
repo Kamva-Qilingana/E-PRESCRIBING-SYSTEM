@@ -1,0 +1,49 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Admission>
+
+@{
+    ViewBag.Title = "Admission List";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<h2>Admission List</h2>
+<div>
+    <a href="@Url.Action("Create", "Surgery")" class="btn btn-secondary">Surgeon Surgery</a>
+</div>
+@* 
+<a asp-action="Create" asp-controller="Surgery">Surgeon Surgery</a> *@
+<br />
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Ward Name</th>
+            <th>Height (cm)</th>
+            <th>Weight (kg)</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Added By</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admission in Model)
+        {
+            <tr>
+                <td>@admission.PatientProfile.PatientName<td>
+                <td>@admission.WardID</td>
+                <td>@admission.height</td>
+                <td>@admission.weight</td>
+                <td>@admission.status</td>
+                <td>@admission.Date.ToShortDateString()</td>
+                <td>@admission.Username</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@admission.AdmissionId" class="btn btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a href="@Url.Action("Create", "Admissions")" class="btn btn-primary">Add New Admission</a>
+</div>

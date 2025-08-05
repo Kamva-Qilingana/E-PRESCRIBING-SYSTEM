@@ -1,0 +1,51 @@
+﻿@* @model E_PRESCRIBING_SYSTEM.Models.Surgery
+
+@{
+    ViewBag.Title = "Create Surgery";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<h2>Create Surgery</h2>
+
+<form asp-action="CreateSurgery" method="post">
+  
+
+    <div class="form-group">
+        <label asp-for="PatientProfileId"></label>
+        <select asp-for="PatientProfileId" class="form-control" asp-items="ViewBag.PatientProfiles" required>
+            <option value="">-- Select Patient --</option>
+        </select>
+      
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TheatreID"></label>
+        <select asp-for="TheatreID" class="form-control" asp-items="ViewBag.Theatres" required>
+            <option value="">-- Select Theatre --</option>
+        </select>
+      
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TreatmentID"></label>
+        <select asp-for="TreatmentID" class="form-control" asp-items="ViewBag.TreatmentCodes" multiple="multiple" required>
+            <option value="">-- Select Treatment Codes --</option>
+        </select>
+       
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SurgeryDate"></label>
+        <input asp-for="SurgeryDate" class="form-control" type="date" / required>
+     
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TimeSlot"></label>
+        <input asp-for="TimeSlot" class="form-control" placeholder="Enter time slot" / required>
+       
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Surgery</button>
+</form>
+ *@

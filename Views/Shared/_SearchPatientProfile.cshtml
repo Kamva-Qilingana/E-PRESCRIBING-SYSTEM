@@ -1,0 +1,39 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.PatientProfile>
+
+@if (Model != null && Model.Any())
+    @foreach (var med in Model)
+    {
+        <tr>
+            <td>@med.PatientProfileId</td>
+            <td>@med.PatientIDno</td>
+            <td>@med.PatientName</td>
+            <td>@med.PSurname</td>
+            <td>@med.PAddress</td>
+            <td>@med.PContactNo</td>
+            <td>@med.Email</td>
+            <td>@med.Gender</td>
+            <td>@med.DOB</td>
+
+
+
+            <td>
+
+                <a asp-controller="Pharmacist" asp-action="Update" asp-route-id="@med.PatientProfileId">Update</a>
+                <a asp-controller="Pharmacist" asp-action="Delete" asp-route-id="@med.PatientProfileId">Delete</a>
+
+            </td>
+            @*  <td>
+    <div class="btn-group btn-group-sm">
+    <a asp-controller="ChronicNurse" asp-action="ViewVital" asp-route-id="@vital.VitalId" class="btn btn-danger">Edit</a>
+    </div>
+    </td> *@
+        </tr>
+    }
+
+else
+{
+    <tr>
+        <td colspan="3">No results found.</td>
+    </tr>
+
+}

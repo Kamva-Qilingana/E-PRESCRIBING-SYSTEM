@@ -1,0 +1,28 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.ChronicMedsViewModel>
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Chronic Medication List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Schedule</th>
+            <th>Dosage Form</th>
+            <th>Active Ingredients</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ChronicMedicationName</td>
+                <td>@item.Schedule</td>
+                <td>@item.DosageFormName</td>
+                <td>@string.Join(", ", item.ActiveIngredients)</td>
+            </tr>
+        }
+    </tbody>
+</table>

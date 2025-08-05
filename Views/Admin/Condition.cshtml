@@ -1,0 +1,232 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Condition>
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<br />
+<br />
+<body>
+    <div>
+        <a href='@Url.Action("AdminDashboard", "Admin")'>Back</a>
+    </div>
+    <form asp-action="AddCondition" method="post">
+        <h2>Condition</h2>
+        <div class="icon-button" onclick="openModal('listConditionModal')">
+            <img src="~/css/Condition.png" alt="Reports">
+            <p>Conditions</p>
+        </div>
+        <div class="form-group">
+            <label for="Diagnosis"> Diagnosis</label>
+            <input type="text" id="Diagnosis" name="Diagnosis" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <!-- list Active Ingredients Stock Modal -->
+    <div id="listConditionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('listConditionModal')">&times;</span>
+            <!-- Active Ingredient table content -->
+            <h2>List Of Condition</h2>
+
+            <form id="searchForm" asp-action="SearchCondition" asp-controller="Admin" method="get">
+                <input type="text" name="searchText" placeholder="Search">
+                <input type="submit" value="Search">
+            </form>
+
+
+
+
+            <div class="form-container">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Condition ID</th>
+                                <th>Diagnosis</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="searchResults">
+
+                            @if (Model != null && Model.Any())
+                                @foreach (var med in Model)
+                                {
+                                    <tr>
+                                        <td>@med.ConditionID</td>
+                                        <td>@med.Diagnosis</td>
+
+
+                                        
+
+                                        
+
+                                        
+                                        @*  <td>
+                                <div class="btn-group btn-group-sm">
+                                <a asp-controller="ChronicNurse" asp-action="ViewVital" asp-route-id="@vital.VitalId" class="btn btn-danger">Edit</a>
+                                </div>
+                                </td> *@
+                                    </tr>
+                                }
+
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No results found.</td>
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+                    </table>
+
+                    <div id="deleteModal" class="modal">
+                        <div class="modal-content">
+                            <!-- Delete confirmation content will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div id="updateConditionModal" class="modal">
+                        <div class="modal-content">
+                            <!-- The update form will be loaded here via AJAX -->
+                        </div>
+                    </div>
+
+
+
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                    <script>
+                        $(document).ready(function () {
+                            $('#searchForm').submit(function (e) {
+                                e.preventDefault(); // Prevent the default form submission
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: $(this).attr('action'),
+                                    data: $(this).serialize(),
+                                    success: function (response) {
+                                        // Replace the contents of #searchResults with the search results
+                                        $('#searchResults').html(response);
+                                    },
+                                    error: function () {
+                                        alert('An error occurred while searching.');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Open the update modal and load the form via AJAX
+        function openUpdateModal(conditionId) {
+            $.ajax({
+                url: '/Admin/UpdateCondition/' + conditionId,
+                type: 'GET',
+                success: function (response) {
+                    $('#updateConditionModal .modal-content').html(response);
+                    $('#updateConditionModal').show();
+                },
+                error: function () {
+                    alert('Failed to load the update form.');
+                }
+            });
+        }
+
+        // Close the modal
+        function closeModal(modalId) {
+            $('#' + modalId).hide();
+        }
+
+        // Submit the update form via AJAX
+        $(document).on('submit', '#updateConditionForm', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function () {
+                    alert('Condition updated successfully!');
+                    closeModal('updateConditionModal');
+                    location.reload(); // Optionally, reload the page to see the updated data
+                },
+                error: function () {
+                    alert('Failed to update condition.');
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        // Open modal for Delete Confirmation
+        function openDeleteModal(conditionId) {
+            $.ajax({
+                url: '/Admin/Delete/' + conditionId,
+                success: function (response) {
+                    $('#deleteModal .modal-content').html(response);  // Fill modal content with the delete confirmation
+                    $('#deleteModal').show();
+                },
+                error: function () {
+                    alert('Error fetching delete confirmation.');
+                }
+            });
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    </script>
+
+
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function addIngredient() {
+            const container = document.getElementById('activeIngredientsContainer');
+            const newIngredientRow = document.createElement('div');
+            newIngredientRow.classList.add('ingredient-row');
+            newIngredientRow.innerHTML = `
+                                                                                           <select id="activeIngredientName" name="activeIngredients[]" placeholder="Ingredient Name" required>
+                                            <%: GenerateIngredientOptions() %>
+                                        </select>
+                                                                                        <input type="text" name="ingredientStrength[]" placeholder="Strength" required>
+                                                                                <button type="button" onclick="removeIngredient(this)">Remove</button>
+                                                                            `;
+            container.appendChild(newIngredientRow);
+        }
+
+        function removeIngredient(button) {
+            const row = button.parentElement;
+            row.remove();
+        }
+
+        document.getElementById('medicationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Medication added successfully!');
+            // Here you can add the code to handle the form data
+        });
+    </script>
+
+</body>

@@ -1,0 +1,359 @@
+﻿@* @model E_PRESCRIBING_SYSTEM.Models.SurgeryReportViewModel
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Create Surgery";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml"; // Adjust as necessary
+}
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<form method="get" action="SurgeryReport">
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+
+    <button type="submit">Generate Report</button>
+</form>
+
+
+<h2>SURGEON REPORT (Sorted by date or patient)</h2>
+
+
+
+<h3>SURGERY REPORT</h3>
+
+<p>Date Range: @Model.StartDate.ToString("dd MMMM yyyy") – @Model.EndDate.ToString("dd MMMM yyyy")</p>
+<p>Report Generated: @DateTime.Now.ToString("dd MMMM yyyy")</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Treatment Code(s)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var surgery in Model.SurgeryList)
+        {
+            <tr>
+                <td>@surgery.SurgeryDate.ToString("dd MMM yyyy")</td>
+                <td>@surgery.PatientName</td>
+                <td>@string.Join(", ", surgery.TreatmentCodes)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Total Patients:</strong> @Model.TotalPatients</p>
+
+<h3>SUMMARY PER TREATMENT CODE:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Treatment Code</th>
+            <th>Total Surgeries</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var codeSummary in Model.TreatmentCodeSummary)
+        {
+            <tr>
+                <td>@codeSummary.Key</td>
+                <td>@codeSummary.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Treatment Code Summary (Bar Graph)</h3>
+<canvas id="treatmentCodeChart" width="400" height="200"></canvas>
+
+<script>
+    // Serialize the treatment code summary from the model
+    var treatmentCodeData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.TreatmentCodeSummary));
+
+    // Extract keys (treatment codes) and values (counts) for the chart
+    var treatmentCodes = Object.keys(treatmentCodeData);
+    var treatmentCounts = Object.values(treatmentCodeData);
+
+    // Create the bar chart
+    var ctx = document.getElementById('treatmentCodeChart').getContext('2d');
+    var treatmentCodeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: treatmentCodes, // X-axis labels (treatment codes)
+            datasets: [{
+                label: 'Number of Surgeries',
+                data: treatmentCounts, // Y-axis data (counts)
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar colors
+                borderColor: 'rgba(75, 192, 192, 1)', // Bar border colors
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true // Start Y-axis at 0
+                }
+            }
+        }
+    });
+</script>
+
+
+ *@
+
+ @model E_PRESCRIBING_SYSTEM.Models.SurgeryReportViewModel
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Create Surgery";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+</head>
+<style>
+    /* General Layout */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h2, h3 {
+        color: black;
+    }
+
+    /* Form Styling */
+    form {
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+        form label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        form input {
+            margin-right: 20px;
+            padding: 5px;
+        }
+
+        form button {
+            padding: 8px 12px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            form button:hover {
+                background-color: blue;
+            }
+    /* Table styling */
+    table {
+        width: 100%;
+        border-collapse: separate; /* Allows spacing between cells */
+        border-spacing: 15px; /* Adds space between cells */
+        margin-bottom: 20px; /* Adds space below the table */
+    }
+
+    th, td {
+        padding: 30px 35px; /* Adds padding inside each cell */
+        text-align: center; /* Aligns text to the left */
+        border: 1px solid #ddd; /* Optional: Adds a border to cells */
+    }
+
+    th {
+        background-color: #f4f4f4; /* Optional: Adds a background to header cells */
+        font-weight: bold;
+    }
+
+    /* Bar Graph Styling */
+    #treatmentCodeChart {
+        display: block;
+        max-width: 600px; /* Limit the graph width */
+        margin: 20px auto;
+    }
+</style>
+
+
+
+    <form method="get" action="SurgeryReport">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+
+        <button type="submit">Generate Report</button>
+    </form>
+<div id="card-content">
+<body>
+    <h2>SURGEON REPORT</h2>
+
+    <h3>SURGERY REPORT</h3>
+
+    <p><strong>Date Range:</strong> @Model.StartDate.ToString("dd MMMM yyyy") – @Model.EndDate.ToString("dd MMMM yyyy")</p>
+    <p><strong>Report Generated:</strong> @DateTime.Now.ToString("dd MMMM yyyy")</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Treatment Code(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var surgery in Model.SurgeryList)
+            {
+                <tr>
+                    <td>@surgery.SurgeryDate.ToString("dd MMM yyyy")</td>
+                    <td>@surgery.PatientName</td>
+                    <td>@string.Join(", ", surgery.TreatmentCodes)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p><strong>Total Patients:</strong> @Model.TotalPatients</p>
+
+    <h3>SUMMARY PER TREATMENT CODE</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Treatment Code</th>
+                <th>Total Surgeries</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var codeSummary in Model.TreatmentCodeSummary)
+            {
+                <tr>
+                    <td>@codeSummary.Key</td>
+                    <td>@codeSummary.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Treatment Code Summary (Bar Graph)</h3>
+    <canvas id="treatmentCodeChart" width="400" height="150"></canvas>
+    <div class="d-flex justify-content-end mt-2">
+        <button type="button" onclick="downloadPDF()" class="btn btn-danger btn-sm">
+            <!-- Changed to red -->
+            <i class="fas fa-download"></i> Download PDF
+        </button>
+    </div>
+@*   
+    <script>
+        // Serialize the treatment code summary from the model
+        var treatmentCodeData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.TreatmentCodeSummary));
+
+        // Extract keys (treatment codes) and values (counts) for the chart
+        var treatmentCodes = Object.keys(treatmentCodeData);
+        var treatmentCounts = Object.values(treatmentCodeData);
+
+        // Create the bar chart
+        var ctx = document.getElementById('treatmentCodeChart').getContext('2d');
+        var treatmentCodeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: treatmentCodes, // X-axis labels (treatment codes)
+                datasets: [{
+                    label: 'Number of Surgeries',
+                    data: treatmentCounts, // Y-axis data (counts)
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Bar colors
+                    borderColor: 'rgba(54, 162, 235, 1)', // Bar border colors
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allows custom height/width
+                scales: {
+                    y: {
+                        beginAtZero: true // Start Y-axis at 0
+                    }
+                }
+            }
+        });
+    </script> *@
+    <script>
+        // Serialize the treatment code summary from the model
+        var treatmentCodeData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.TreatmentCodeSummary));
+
+        // Extract keys (treatment codes) and values (counts) for the chart
+        var treatmentCodes = Object.keys(treatmentCodeData);
+        var treatmentCounts = Object.values(treatmentCodeData);
+
+        // Create the bar chart
+        var ctx = document.getElementById('treatmentCodeChart').getContext('2d');
+        var treatmentCodeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: treatmentCodes, // X-axis labels (treatment codes)
+                datasets: [{
+                    label: 'Number of Surgeries',
+                    data: treatmentCounts, // Y-axis data (counts)
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar colors
+                    borderColor: 'rgba(75, 192, 192, 1)', // Bar border colors
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true // Start Y-axis at 0
+                    }
+                }
+            }
+        });
+    </script>
+
+    @section Scripts {
+  @*   @await Html.RenderPartialAsync("_ValidationScriptsPartial") *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('card-content');
+            html2pdf()
+                .from(element)
+                .set({
+                    margin: 10,
+                    filename: 'TreatmentCodes.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                })
+                .toPdf()
+                .get('pdf')
+                .then(function (pdf) {
+                    let totalPages = pdf.internal.getNumberOfPages();
+                    for (let i = 1; i <= totalPages; i++) {
+                        pdf.setPage(i);
+                        pdf.text('Page ' + i + ' of ' + totalPages, pdf.internal.pageSize.getWidth() - 20, pdf.internal.pageSize.getHeight() - 10);
+                    }
+                })
+                .save();
+        }
+    </script>
+    }
+</body>
+</div>

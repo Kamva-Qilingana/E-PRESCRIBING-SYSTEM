@@ -1,0 +1,22 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.ActiveIngredients>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var med in Model)
+    {
+        <tr>
+            <td>@med.ActiveIngredientsID</td>
+            <td>@med.ActiveIngredientsName</td>
+            <td>
+                <a asp-controller="Pharmacist" asp-action="Update" asp-route-id="@med.ActiveIngredientsID">Update</a>
+                <a asp-controller="Pharmacist" asp-action="Delete" asp-route-id="@med.ActiveIngredientsID">Delete</a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="3">Active ingredient not found.</td>
+    </tr>
+}

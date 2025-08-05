@@ -1,0 +1,196 @@
+﻿@* @model DEMO.Models.MedicationViewModel
+
+@{
+    ViewBag.Title = "Create Medication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+} 
+
+<h2>Create Medication</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Medication</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MedicationName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MedicationName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MedicationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActiveIngredientsID, "Active Ingredient", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ActiveIngredientsID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActiveIngredientsID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IngredientStrength, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IngredientStrength, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IngredientStrength, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DosageFormID, "Dosage Form", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DosageFormID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DosageFormID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReorderLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReorderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReorderLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockOnHand, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StockOnHand, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StockOnHand, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+  *@
+
+@* @model DEMO.Models.MedicationViewModel
+
+@{
+    ViewBag.Title = "Create Medication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Create Medication</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Medication</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MedicationName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MedicationName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MedicationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DosageFormID, "Dosage Form", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DosageFormID, (IEnumerable<SelectListItem>)ViewData["DosageFormID"], "Select Dosage Form", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DosageFormID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="activeIngredientsContainer">
+            @for (int i = 0; i < Model.ActiveIngredients.Count; i++)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ActiveIngredients[i].ActiveIngredientsID, "Active Ingredient", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownList($"ActiveIngredients[{i}].ActiveIngredientsID", 
+                            new SelectList(ViewBag.ActiveIngredients, "ActiveIngredientsID", "ActiveIngredientsName", Model.ActiveIngredients[i].ActiveIngredientsID), 
+                            "Select Ingredient", 
+                            new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ActiveIngredients[i].ActiveIngredientsID, "", new { @class = "text-danger" })
+                    </div>
+
+                    @Html.LabelFor(m => m.ActiveIngredients[i].IngredientStrength, "Strength", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => m.ActiveIngredients[i].IngredientStrength, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.ActiveIngredients[i].IngredientStrength, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" id="addIngredient" class="btn btn-default">Add Ingredient</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReorderLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReorderLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReorderLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockOnHand, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StockOnHand, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StockOnHand, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+ *@
+@* @section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ingredientIndex = @Model.ActiveIngredients.Count;
+
+            $('#addIngredient').click(function () {
+                var newIngredient = `
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="ActiveIngredients_${ingredientIndex}__ActiveIngredientsID">Active Ingredient</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="ActiveIngredients_${ingredientIndex}__ActiveIngredientsID" name="ActiveIngredients[${ingredientIndex}].ActiveIngredientsID">
+                                @foreach (var ingredient in ViewBag.ActiveIngredients)
+                                {
+                                    <text>
+                                        <option value="@ingredient.ActiveIngredientsID">@ingredient.ActiveIngredientsName</option>
+                                    </text>
+                                }
+                            </select>
+                        </div>
+                        <label class="control-label col-md-2" for="ActiveIngredients_${ingredientIndex}__IngredientStrength">Strength</label>
+                        <div class="col-md-4">
+                            <input class="form-control" id="ActiveIngredients_${ingredientIndex}__IngredientStrength" name="ActiveIngredients[${ingredientIndex}].IngredientStrength" type="text" value="" />
+                        </div>
+                    </div>`;
+                $('#activeIngredientsContainer').append(newIngredient);
+                ingredientIndex++;
+            });
+        });
+    </script>
+} *@
+
+
+
+

@@ -1,0 +1,148 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Threatre>
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<br />
+<br />
+<body>
+    <div>
+        <a href='@Url.Action("AdminDashboard", "Admin")'>Back</a>
+    </div>
+    <form asp-action="AddTheatre" method="post">
+        <h2>Add Operating Theatres</h2>
+        <div class="icon-button" onclick="openModal('listTheatreModal')">
+            <img src="~/css/Theatre.png" alt="Reports">
+            <p>Theatres</p>
+        </div>
+        <div class="form-group">
+            <label for="TheatreName"> Threatre Name:</label>
+            <input type="text" id="TheatreName" name="TheatreName" required/>
+        </div>
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <!-- list Active Ingredients Stock Modal -->
+    <div id="listTheatreModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('listTheatreModal')">&times;</span>
+            <!-- Active Ingredient table content -->
+            <h2>List Of Theatre</h2>
+
+            <form id="searchForm" asp-action="SearchThreatre" asp-controller="Admin" method="get">
+                <input type="text" name="searchText" placeholder="Search">
+                <input type="submit" value="Search">
+            </form>
+
+
+
+
+            <div class="form-container">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Theatre ID</th>
+                                <th>Name</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="searchResults">
+
+                            @if (Model != null && Model.Any())
+                                @foreach (var med in Model)
+                                {
+                                    <tr>
+                                        <td>@med.TheatreID</td>
+                                        <td>@med.TheatreName/td>
+
+
+                                        @*  <td>
+                                <div class="btn-group btn-group-sm">
+                                <a asp-controller="ChronicNurse" asp-action="ViewVital" asp-route-id="@vital.VitalId" class="btn btn-danger">Edit</a>
+                                </div>
+                                </td> *@
+                                    </tr>
+                                }
+
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No results found.</td>
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+                    </table>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                    <script>
+                        $(document).ready(function () {
+                            $('#searchForm').submit(function (e) {
+                                e.preventDefault(); // Prevent the default form submission
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: $(this).attr('action'),
+                                    data: $(this).serialize(),
+                                    success: function (response) {
+                                        // Replace the contents of #searchResults with the search results
+                                        $('#searchResults').html(response);
+                                    },
+                                    error: function () {
+                                        alert('An error occurred while searching.');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function addIngredient() {
+            const container = document.getElementById('activeIngredientsContainer');
+            const newIngredientRow = document.createElement('div');
+            newIngredientRow.classList.add('ingredient-row');
+            newIngredientRow.innerHTML = `
+                                                                                           <select id="activeIngredientName" name="activeIngredients[]" placeholder="Ingredient Name" required>
+                                            <%: GenerateIngredientOptions() %>
+                                        </select>
+                                                                                        <input type="text" name="ingredientStrength[]" placeholder="Strength" required>
+                                                                                <button type="button" onclick="removeIngredient(this)">Remove</button>
+                                                                            `;
+            container.appendChild(newIngredientRow);
+        }
+
+        function removeIngredient(button) {
+            const row = button.parentElement;
+            row.remove();
+        }
+
+        document.getElementById('medicationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Medication added successfully!');
+            // Here you can add the code to handle the form data
+        });
+    </script>
+
+</body>

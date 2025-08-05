@@ -1,0 +1,93 @@
+﻿@model List<E_PRESCRIBING_SYSTEM.Models.PatientMedication>
+
+@{
+    ViewBag.Title = "Add Patient Medication";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<h2>Add Patient Medication</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" id="medicationsContainer">
+        <h4>Patient Medications</h4>
+        <hr />
+
+        <!-- Patient selection remains the same, outside the dynamic medication section -->
+        <div class="form-group">
+            @Html.LabelFor(m => m[0].PatientProfileId, "Patient Profile", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m[0].PatientProfileId, ViewBag.PatientProfileId as SelectList, "Select a Patient", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m[0].PatientProfileId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- This is where the medication rows are added -->
+        <div class="medication-row">
+            <div class="form-group">
+                @Html.LabelFor(m => m[0].PharmacyMedicationId, "Pharmacy Medication", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m[0].PharmacyMedicationId, ViewBag.PharmacyMedicationId as SelectList, "Select Medication", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m[0].PharmacyMedicationId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m[0].Quantity, "Quantity", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m[0].Quantity, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m[0].Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to add another medication -->
+    <button type="button" id="addRow" class="btn btn-primary">Add Another Medication</button>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Add Medications" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "PatientMedication")
+</div>
+
+<!-- jQuery to dynamically add medication rows -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        let index = 1; // Track the number of rows
+
+        $('#addRow').click(function () {
+            let newRow = $('.medication-row:first').clone();
+
+            // Update the index of inputs for the new row
+            newRow.find('input, select').each(function () {
+                let nameAttr = $(this).attr('name');
+                if (nameAttr) {
+                    // Replace [0] with the new index to make the inputs unique
+                    let newNameAttr = nameAttr.replace('[0]', '[' + index + ']');
+                    $(this).attr('name', newNameAttr);
+                }
+
+                // Clear input values
+                if ($(this).is('input')) {
+                    $(this).val('');
+                }
+                if ($(this).is('select')) {
+                    $(this).prop('selectedIndex', 0);
+                }
+            });
+
+            // Append the new row
+            $('#medicationsContainer').append(newRow);
+
+            index++; // Increment index for the next row
+        });
+    });
+</script>

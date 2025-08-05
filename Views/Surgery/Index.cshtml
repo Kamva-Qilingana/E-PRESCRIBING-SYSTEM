@@ -1,0 +1,79 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Surgery>
+
+@{
+    ViewBag.Title = "Surgery List";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml"; // Adjust layout path as necessary
+}
+
+<h2>Surgery List</h2>
+
+<!-- Search Form -->
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="form-group">
+        <label for="searchQuery">Search Surgery by Patient Name or ID:</label>
+        <div class="input-group">
+            <input type="text" id="searchQuery" name="searchQuery" class="form-control" placeholder="Enter Patient ID or Name" value="@ViewBag.SearchQuery" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Surgery List Table -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Theatre</th>
+            <th>Treatments</th>
+            <th>Surgery Date</th>
+            <th>Time Slot</th>
+            <th>Created By</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int count = 1;
+            foreach (var surgery in Model)
+            {
+                <tr>
+                    <td>@count</td>
+                    <td>@surgery.PatientProfile?.PatientName (@surgery.PatientProfile?.PatientIDno)</td>
+                    <td>@surgery.Theatre?.TheatreName</td>
+                    <td>
+                        @foreach (var treatment in surgery.SurgeryTreatments)
+                        {
+                            <span>@treatment.TreatmentCode.Code  - @treatment.TreatmentCode.Description</span>
+                        }
+                    </td>
+                    <td>@surgery.SurgeryDate.ToString("yyyy-MM-dd")</td>
+                    <td>@surgery.TimeSlot</td>
+                    <td>@surgery.CreatedBy</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@surgery.SurgeryID" class="btn btn-warning btn-sm">Edit</a>
+                        
+                        <a asp-action="Details" asp-route-id="@surgery.SurgeryID" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@surgery.SurgeryID" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                count++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No surgeries found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Create" class="btn btn-primary">Add New Surgery</a>
+</div>
+
+

@@ -1,0 +1,16 @@
+﻿@* @model ReceivedViewModel
+
+<h2>Receive Stock</h2>
+
+<form asp-action="ReceiveStock" method="post">
+    <div>
+        <label for="MedicationOrderId">Select Medication Order</label>
+        <select asp-for="MedicationOrderId" asp-items="@(new SelectList(Model.MedicationOrders, "Id", "MedicationName"))" required></select>
+    </div>
+    <div>
+        <label for="ReceivedQuantity">Received Quantity</label>
+        <input asp-for="ReceivedQuantity" type="number" min="1" required />
+    </div>
+    <button type="submit">Submit</button>
+</form>
+ *@

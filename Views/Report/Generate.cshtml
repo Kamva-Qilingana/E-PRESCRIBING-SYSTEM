@@ -1,0 +1,20 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.PharmacistReportViewModel
+
+@{
+    ViewData["Title"] = "Generate Pharmacist Report";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<h2>Select Date Range for Pharmacist Report</h2>
+
+<form asp-action="GenerateReport" asp-controller="Report" method="post">
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" asp-for="StartDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" asp-for="EndDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>

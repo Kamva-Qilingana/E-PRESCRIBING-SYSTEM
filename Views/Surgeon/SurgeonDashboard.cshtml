@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Surgeon Dashboard";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Surgeon Dashboard</h2>
+
+    <div class="row text-white">
+        <div class="col-md-3">
+            <div class="card bg-primary text-center">
+                <div class="card-body">
+                    <i class="fas fa-procedures fa-2x mb-2"></i>
+                    <h5>Total Surgeries</h5>
+                    <h3>@ViewBag.TotalSurgeries</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-day fa-2x mb-2"></i>
+                    <h5>Today's Surgeries</h5>
+                    <h3>@ViewBag.TodaySurgeries</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-center">
+                <div class="card-body">
+                    <i class="fas fa-users fa-2x mb-2"></i>
+                    <h5>Total Patients</h5>
+                    <h3>@ViewBag.TotalPatients</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-center">
+                <div class="card-body">
+                    <i class="fas fa-hospital fa-2x mb-2"></i>
+                    <h5>Total Theatres</h5>
+                    <h3>@ViewBag.TotalTheatres</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a class="btn btn-outline-primary" href="@Url.Action("Index", "Surgery")">
+            <i class="fas fa-list"></i> View All Surgeries
+        </a>
+        <a class="btn btn-outline-success" href="@Url.Action("Create", "Surgery")">
+            <i class="fas fa-plus"></i> Schedule Surgery
+        </a>
+        <a class="btn btn-outline-secondary" href="@Url.Action("SurgeryReport", "Surgery")">
+            <i class="fas fa-chart-bar"></i> View Reports
+        </a>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h4>Urgent Pending Prescriptions</h4>
+    @if (ViewBag.UrgentPrescriptions != null && ViewBag.UrgentPrescriptions.Count > 0)
+    {
+        <table class="table table-sm table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Date Added</th>
+                    <th>Status</th>
+                    <th>Medications</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in ViewBag.UrgentPrescriptions as List<E_PRESCRIBING_SYSTEM.Models.NewPrescription>)
+                {
+                    <tr>
+                        <td>@p.PrescriptionId</td>
+                        <td>@p.PatientProfile.PatientName @p.PatientProfile.PSurname</td>
+                        <td>@p.DateAdded.ToString("yyyy-MM-dd")</td>
+                        <td>@p.Status</td>
+                        <td>
+                            <ul class="m-0 p-0">
+                                @foreach (var med in p.PrescriptionMedications)
+                                {
+                                    <li>@med.PharmacyMedication.Name (Qty: @med.Quantity)</li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ViewPrescriptionDetails", "Prescription", new { id = p.PrescriptionId })" class="btn btn-sm btn-info">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">No urgent prescriptions pending.</p>
+    }
+</div>

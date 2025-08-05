@@ -1,0 +1,41 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.SuburbViewModel
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<h2>Add Suburb</h2>
+<a href="@Url.Action("AdminDashboard", "Admin")">Back</a>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@using (Html.BeginForm("AddSuburb", "Admin", FormMethod.Post))
+{
+    <div class="icon-button" onclick="window.location.href='/Admin/SuburbList'">
+        <img src="~/css/Condition.png" alt="Reports">
+        <p>Suburbs</p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SuburbName)
+        @Html.TextBoxFor(m => m.SuburbName, new { @class = "form-control", placeholder = "Enter Suburb Name" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PostalCode)
+        @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control", placeholder = "Enter Postal Code" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CityID, "Select City")
+        @Html.DropDownListFor(m => m.CityID, Model.Cities, "Select a City", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Suburb</button>
+}

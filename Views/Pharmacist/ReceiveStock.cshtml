@@ -1,0 +1,33 @@
+﻿@* @model List<DEMO.Models.ReceiveStockViewModel>
+@{
+    ViewData["Title"] = "Add Medication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<form asp-action="ReceiveStock" method="post">
+    <table>
+        <thead>
+            <tr>
+                <th>Medication Name</th>
+                <th>Ordered Quantity</th>
+                <th>Received Quantity</th>
+                <th>Stock On Hand</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.OrderedQuantity</td>
+                    <td>
+                        <input type="number" name="[@Model.IndexOf(item)].ReceivedQuantity" min="0" value="0" />
+                    </td>
+                    <td>@item.StockOnHand</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit">Receive Stock</button>
+</form> *@

@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "Nurse Dashboard";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+
+<style>
+    h2, h4 {
+        font-weight: bold;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        border-left: 5px solid #0d6efd;
+        padding-left: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .table-container {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4 text-primary">Nurse Dashboard</h2>
+
+    <div class="row mb-4 g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Patients</h5>
+                    <p class="card-text">@ViewBag.TotalPatients</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Admissions</h5>
+                    <p class="card-text">@ViewBag.TotalAdmissions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h4 class="section-title">Recent Admissions</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Ward</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var admission in ViewBag.RecentAdmissions)
+                    {
+                        <tr>
+                            <td>@admission.PatientProfile.PatientName</td>
+                            <td>@admission.Ward.WardName</td>
+                            <td>@admission.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h4 class="section-title">Recent Vital Signs</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Temp (°C)</th>
+                        <th>HR</th>
+                        <th>O₂ Sat</th>
+                        <th>Height (cm)</th>
+                        <th>Weight (kg)</th>
+                        <th>Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vs in ViewBag.RecentVitals)
+                    {
+                        <tr>
+                            <td>@vs.PatientProfile?.PatientName</td>
+                            <td>@vs.BodyTemperature</td>
+                            <td>@vs.HeartRate</td>
+                            <td>@vs.BloodOxygenSaturation</td>
+                            <td>@vs.Height</td>
+                            <td>@vs.Weight</td>
+                            <td>@vs.RecordedAt.ToString("g")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h4 class="section-title">Recent Allergies</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Allergen</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var allergy in ViewBag.RecentAllergies)
+                    {
+                        <tr>
+                            <td>@allergy.PatientProfile?.PatientName</td>
+                            <td>@allergy.ActiveIngredients?.ActiveIngredientsName</td>
+                            <td>@allergy.AllergyDescription</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h4 class="section-title">Recent Conditions</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Condition</th>
+                        <th>Diagnosed On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var condition in ViewBag.RecentConditions)
+                    {
+                        <tr>
+                            <td>@condition.PatientProfile?.PatientName</td>
+                            <td>@condition.Condition?.Diagnosis</td>
+                            <td>@condition.DiagnosisDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

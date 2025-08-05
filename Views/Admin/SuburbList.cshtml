@@ -1,0 +1,28 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Suburb>
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Suburb List</h2>
+<a href="@Url.Action("AddSuburb", "Admin")">Add Suburb</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Suburb Name</th>
+            <th>Postal Code</th>
+            <th>City Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var suburb in Model)
+        {
+            <tr>
+                <td>@suburb.SuburbName</td>
+                <td>@suburb.PostalCode</td>
+                <td>@suburb.City.CityName</td> <!-- Display the related city -->
+            </tr>
+        }
+    </tbody>
+</table>

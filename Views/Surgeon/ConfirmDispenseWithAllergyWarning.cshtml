@@ -1,0 +1,22 @@
+﻿@model List<string>
+
+<h2>Allergy Warning</h2>
+
+<div class="alert alert-danger">
+    <p>The patient is allergic to the following ingredients in the prescribed medication:</p>
+    <ul>
+        @foreach (var ingredient in Model)
+        {
+            <li>@ingredient</li>
+        }
+    </ul>
+</div>
+
+<p>Are you sure you want to continue dispensing this prescription?</p>
+
+<form asp-action="CompleteDispense" method="post">
+    <input type="hidden" name="prescriptionId" value="@ViewBag.PrescriptionId" />
+    <input type="hidden" name="quantity" value="@ViewBag.Quantity" />
+    <button type="submit" class="btn btn-danger">Continue Dispensing</button>
+    <a asp-action="PrescriptionList" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.PatientAllergy>
+@{
+    ViewData["Title"] = "Manage Prescription";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<h2>Patient Allergy</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Allergen</th>
+            <th>Allergy Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var allergy in Model)
+        {
+            <tr>
+                <td>@allergy.ActiveIngredients.ActiveIngredientsName</td>
+                <td>@allergy.AllergyDescription</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

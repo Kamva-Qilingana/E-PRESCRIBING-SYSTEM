@@ -1,0 +1,56 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.SurgeryViewModel
+
+<h2>Edit Surgery</h2>
+
+<form asp-action="Edit" asp-controller="Surgery" method="post">
+    <div class="form-group">
+        <label for="PatientProfileId">Patient</label>
+        <select id="PatientProfileId" name="PatientProfileId" class="form-control">
+            @foreach (var patient in Model.Patients)
+            {
+                <option value="@patient.PatientProfileId" value=@(patient.PatientProfileId == Model.PatientProfileId ? "selected=\"selected\"" : "")>
+                    @patient.PatientName (@patient.PatientIDno)
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="TheatreID">Theatre</label>
+        <select id="TheatreID" name="TheatreID" class="form-control">
+            @foreach (var theatre in Model.Theatres)
+            {
+                <option value="@theatre.TheatreID" vlue=@(theatre.TheatreID == Model.TheatreID ? "selected=\"selected\"" : "")>
+                    @theatre.TheatreName
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="SurgeryDate">Surgery Date</label>
+        <input type="date" id="SurgeryDate" name="SurgeryDate" class="form-control" value="@Model.SurgeryDate.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <div class="form-group">
+        <label for="TimeSlot">Time Slot</label>
+        <input type="text" id="TimeSlot" name="TimeSlot" class="form-control" value="@Model.TimeSlot" required />
+    </div>
+
+    <div class="form-group">
+        <label for="SelectedTreatmentIDs">Treatments</label>
+        <select multiple id="SelectedTreatmentIDs" name="SelectedTreatmentIDs" class="form-control">
+            @foreach (var treatment in Model.Treatments)
+            {
+                <option value="@treatment.TreatmentID" value=@(Model.SelectedTreatmentIDs.Contains(treatment.TreatmentID) ? "selected=\"selected\"" : "")>
+                    @treatment.Code - @treatment.Description
+                </option>
+            }
+        </select>
+    </div>
+
+    <input type="hidden" name="SurgeryID" value="@Model.SurgeryID" />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" asp-controller="Surgery" class="btn btn-secondary">Cancel</a>
+</form>

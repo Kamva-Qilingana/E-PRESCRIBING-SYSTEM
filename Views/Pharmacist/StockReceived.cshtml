@@ -1,0 +1,41 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.StockReceivedViewModel
+@{
+    ViewData["Title"] = "Add Medication";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+<h2>Receive Stock</h2>
+
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+</head>
+
+
+<a asp-action="StockReceivedList" asp-controller="Pharmacist" class="btn btn-primary"> Stock Received List</a>
+<a asp-action="GetStockOrder" asp-controller="Pharmacist" class="btn btn-primary"> Order List</a>
+
+<br/>
+<br/>
+
+
+<form asp-action="StockReceived" method="post">
+    <div class="form-group">
+        <label>Select Stock Order</label>
+        <select asp-for="StockOrderID" class="form-control" asp-items="ViewBag.Orders">
+            <option value="">-- Select Order --</option>
+        </select>
+        <span asp-validation-for="StockOrderID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Order Quantity</label>
+        <input asp-for="OrderQuantity" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Received Quantity</label>
+        <input asp-for="ReceivedQuantity" class="form-control" />
+        <span asp-validation-for="ReceivedQuantity" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

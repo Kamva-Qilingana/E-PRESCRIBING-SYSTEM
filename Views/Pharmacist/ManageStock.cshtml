@@ -1,0 +1,242 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.CombinedStockViewModel
+
+@{
+    ViewData["Title"] = "Manage Medication Stock";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+            .pagination .page-item.disabled .page-link {
+                pointer-events: none;
+                color: #ccc;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #007bff;
+                color: white;
+            }
+    </style>
+
+
+</head>
+
+<ul class="nav nav-tabs" id="stockTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="order-tab" data-bs-toggle="tab" data-bs-target="#order" type="button" role="tab">Stock Order</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab">Stock Received</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="stockTabContent">
+    <!-- ✅ Stock Order Tab -->
+    <div class="tab-pane fade show active" id="order" role="tabpanel">
+      @*   <div class="icon-button" onclick="openModal('listStockModal')">
+            <img src="~/css/DosageForm.png" alt="Reports">
+            <p>Stock Order List</p>
+        </div> *@
+        <a class="icon-button" href="@Url.Action("GetStockOrder", "Pharmacist")">
+            <img src="~/css/DosageForm.png" alt="Reports">
+            <p>Stock Order List</p>
+        </a>
+
+        <form asp-action="PlaceStockOrder" method="post">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Select</th>
+                        <th>Medication Name</th>
+                        <th>Reorder Level</th>
+                        <th>Stock On Hand</th>
+                        <th>Quantity to Add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.StockOrder.Medications.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="StockOrder.Medications[@i].IsSelected" value="true" />
+                                <input type="hidden" name="StockOrder.Medications[@i].IsSelected" value="false" />
+                            </td>
+                            <td>@Model.StockOrder.Medications[i].Name</td>
+                            <td>@Model.StockOrder.Medications[i].StockOnHand</td>
+                            <td>@Model.StockOrder.Medications[i].ReorderLevel</td>
+                            <td>
+                                <input type="number" name="StockOrder.Medications[@i].OrderQuantity" value="@Model.StockOrder.Medications[i].OrderQuantity" />
+                            </td>
+                            <input type="hidden" name="StockOrder.Medications[@i].PharmacyMedicationId" value="@Model.StockOrder.Medications[i].PharmacyMedicationId" />
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-success">Add Stock</button>
+            <br/>
+            <br/>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="ManageStock" asp-route-page="@(Model.CurrentPage - 1)">Previous</a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                            <a class="page-link" asp-action="ManageStock" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-action="ManageStock" asp-route-page="@(Model.CurrentPage + 1)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </form>
+
+        <div id="istStockModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('listStockModal')">&times;</span>
+                <h2>List Of Orders</h2>
+
+                <form id="searchForm" asp-action="Search" asp-controller="OrderStock" method="get">
+                    <input type="text" name="searchText" placeholder="Search">
+                    <input type="submit" value="Search">
+                </form>
+
+                <div class="form-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Medication Name</th>
+                                <th>Order Quantity</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StockOrder.Medications.Where(m => m.IsSelected && m.OrderQuantity > 0))
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.OrderQuantity</td>
+                                    <td>@DateTime.Now.ToString("yyyy-MM-dd")</td>
+                                    <td>Ordered</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- list Active Ingredients Stock Modal -->
+        <div id="listStockModal'" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('listStockModal'')">&times;</span>
+                <!-- Active Ingredient table content -->
+                <h2>List Of Dosage Forms</h2>
+
+                <form id="searchForm" asp-action="SearchDosageForm" asp-controller="Admin" method="get">
+                    <input type="text" name="searchText" placeholder="Search">
+                    <input type="submit" value="Search">
+                </form>
+
+
+
+
+                <div class="form-container">
+
+                    
+                        
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                        <script>
+                            $(document).ready(function () {
+                                $('#searchForm').submit(function (e) {
+                                    e.preventDefault(); // Prevent the default form submission
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: $(this).attr('action'),
+                                        data: $(this).serialize(),
+                                        success: function (response) {
+                                            // Replace the contents of #searchResults with the search results
+                                            $('#searchResults').html(response);
+                                        },
+                                        error: function () {
+                                            alert('An error occurred while searching.');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        
+
+
+        <script>
+            function openModal(modalId) {
+                document.getElementById(modalId).style.display = "block";
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = "none";
+            }
+        </script>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- ✅ Stock Received Tab -->
+    <div class="tab-pane fade" id="received" role="tabpanel">
+       @*  @await Html.PartialAsync("StockReceivedPartial", Model) *@
+
+      
+        <a class="icon-button" href="@Url.Action("StockReceivedList", "Pharmacist")">
+            <img src="~/css/DosageForm.png" alt="Reports">
+            <p>Receieved Stock List</p>
+        </a>
+     
+         <a class="icon-button" href="@Url.Action("GetStockOrder", "Pharmacist")">
+            <img src="~/css/DosageForm.png" alt="Reports">
+            <p>Stock Order List</p>
+        </a>
+
+        <br />
+        <br />
+
+        <form asp-action="ManageStock" method="post">
+            <div class="form-group">
+                <label>Select Stock Order</label>
+                <select asp-for="StockReceived.StockOrderID" class="form-control" asp-items="ViewBag.Orders">
+                    <option value="">-- Select Order --</option>
+                </select>
+                <span asp-validation-for="StockReceived.StockOrderID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Order Quantity</label>
+                <input asp-for="StockReceived.OrderQuantity" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label>Received Quantity</label>
+                <input asp-for="StockReceived.ReceivedQuantity" class="form-control" />
+                <span asp-validation-for="StockReceived.ReceivedQuantity" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+</div>

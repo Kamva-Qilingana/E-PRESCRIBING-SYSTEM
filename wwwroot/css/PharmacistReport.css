@@ -1,0 +1,37 @@
+﻿.form-card {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    page-break-inside: avoid;
+}
+
+table, tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid;
+}
+
+.no-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+@media print {
+    .btn-download {
+        display: none;
+    }
+
+    .form-card {
+        page-break-after: always;
+    }
+
+    #medicationBarChart {
+        max-width: 100%;
+        max-height: 400px;
+    }
+}
+
+#medicationBarChart {
+    width: 100% !important;
+    height: 300px !important;
+}

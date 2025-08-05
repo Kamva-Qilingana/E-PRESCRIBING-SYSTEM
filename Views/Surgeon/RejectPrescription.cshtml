@@ -1,0 +1,50 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.NewPrescription
+
+@{
+    ViewData["Title"] = "Reject Prescription";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-danger text-white rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-x-circle-fill me-2"></i> Reject Prescription for <strong>@Model.PatientProfile?.PatientName</strong>
+                    </h4>
+                </div>
+
+                <div class="card-body px-4 pt-4">
+                    <form asp-action="Reject" method="post">
+                        <input type="hidden" name="prescriptionId" value="@Model.PrescriptionId" />
+
+                        <div class="mb-4">
+                            <label for="rejectionNote" class="form-label fw-semibold">Rejection Note</label>
+                            <textarea name="rejectionNote" id="rejectionNote" class="form-control border-danger-subtle shadow-sm rounded-3"
+                                      rows="5"
+                                      placeholder="Provide a reason for rejection..."
+                                      required></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="PrescriptionList" asp-controller="Surgeon" class="btn btn-secondary rounded-pill px-4">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger rounded-pill px-4">
+                                <i class="bi bi-x-circle"></i> Submit Rejection
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+}
+
+ 

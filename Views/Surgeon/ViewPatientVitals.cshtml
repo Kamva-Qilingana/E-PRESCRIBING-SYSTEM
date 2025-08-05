@@ -1,0 +1,40 @@
+﻿
+ @model IEnumerable<E_PRESCRIBING_SYSTEM.Models.VitalSign>
+
+@{
+    ViewBag.Title = "Vital List";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+
+<h2>Vitals List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Body Temperature</th>
+            <th>Heart Rate</th>
+            <th>Blood Oxygen Saturation</th>
+            <th>Height</th>
+            <th>Weight</th>
+            <th>Recorded By</th>
+            <th>Recorded At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PatientProfile.PatientIDno</td>
+                <td>@item.BodyTemperature</td>
+                <td>@item.HeartRate</td>
+                <td>@item.BloodOxygenSaturation</td>
+                <td>@item.Height</td>
+                <td>@item.Weight</td>
+                <td>@item.Username</td>
+                <td>@item.RecordedAt.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>

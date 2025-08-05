@@ -1,0 +1,233 @@
+﻿@* @model E_PRESCRIBING_SYSTEM.Models.StockViewModel
+@{
+    ViewData["Title"] = "Add Medication";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+ *@
+
+ @model E_PRESCRIBING_SYSTEM.Models.CombinedStockViewModel
+
+@{
+    ViewData["Title"] = "Manage Medication Stock";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+</head>
+
+@* <h2>Select Stock to Add</h2> *@
+
+
+
+@* 
+    <a asp-action="GetStockOrder" asp-controller="Pharmacist" class="btn btn-primary"> Order List</a>
+
+
+
+    <a asp-action="StockReceived" asp-controller="Pharmacist" class="btn btn-primary"> Add Receive Stock</a> *@
+
+<ul class="nav nav-tabs" id="stockTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="order-tab" data-bs-toggle="tab" data-bs-target="#order" type="button" role="tab">Stock Order</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab">Stock Received</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="stockTabContent">
+    <div class="tab-pane fade show active" id="order" role="tabpanel">
+        <!-- 🔁 Paste your Stock Order form here -->
+        @* Your StockOrder form code *@
+
+
+        <form asp-action="StockOrder" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Medication Name</th>
+                        <th>Reorder Level</th>
+                        <th>Stock On Hand</th>
+                        <th>Quantity to Add</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                  @*   @for (int i = 0; i < Model.Medications.Count; i++) *@
+                    @for (int i = 0; i < Model.StockOrder.Medications.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="Medications[@i].IsSelected" value="true" />
+                                <input type="hidden" name="Medications[@i].IsSelected" value="false" />
+                            </td>
+                            <td>@Model.StockOrder.Medications[i].Name</td>
+                            <td>@Model.StockOrder.Medications[i].StockOnHand</td>
+                            <td>@Model.StockOrder.Medications[i].ReorderLevel</td>
+                            <td>
+                                <input type="number" name="Medications[@i].OrderQuantity" value="@Model.StockOrder.Medications[i].OrderQuantity" />
+                            </td>
+                            <input type="hidden" name="Medications[@i].PharmacyMedicationId" value="@Model.StockOrder.Medications[i].PharmacyMedicationId" />
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit">Add Stock</button>
+        </form>
+
+        <div class="modal fade" id="openOrderModal" tabindex="-1" role="dialog" aria-labelledby="openOrderModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Received Orders</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="orderListModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('orderListModal')">&times;</span>
+                <!-- Active Ingredient table content -->
+                <h2>List Of Orders</h2>
+
+                <form id="searchForm" asp-action="Search" asp-controller="OrderStock" method="get">
+                    <input type="text" name="searchText" placeholder="Search">
+                    <input type="submit" value="Search">
+                </form>
+
+
+
+
+                <div class="form-container">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Medication Name</th>
+                                <th>Order Quantity</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StockOrder.Medications.Where(m => m.IsSelected && m.OrderQuantity > 0))
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.OrderQuantity</td>
+                                    <td>@DateTime.Now.ToString("yyyy-MM-dd")</td> <!-- Assuming order date is today -->
+                                    <td>Ordered</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @*   <script>
+                    function openOrderModal(url) {
+                    // Load the content into the modal
+                    $('.modal-body').load(url, function () {
+                    // Show the modal after loading the content
+                    $('#orderModal').modal('show');
+                    });
+                    }
+                    </script> *@
+
+                    <script>
+                        function openModal(modalId) {
+                            document.getElementById(modalId).style.display = "block";
+                        }
+
+                        function closeModal(modalId) {
+                            document.getElementById(modalId).style.display = "none";
+                        }
+
+                        function opentheatreModal(url) {
+                            $('#theatreModalBody').load(url, function () {
+                                $('#theatreModal').modal('show');
+                            });
+                        }
+
+                    </script>
+
+
+
+                    @*  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                    <script>
+                    $(document).ready(function () {
+                    $('#searchForm').submit(function (e) {
+                    e.preventDefault(); // Prevent the default form submission
+
+                    $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                    // Replace the contents of #searchResults with the search results
+                    $('#searchResults').html(response);
+                    },
+                    error: function () {
+                    alert('An error occurred while searching.');
+                    }
+                    });
+                    });
+                    });
+                    </script> *@
+
+                </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="received" role="tabpanel">
+        <!-- 📝 Paste your Stock Received content or partial view here -->
+        @await Html.PartialAsync("StockReceivedPartial", Model)  @* if you have a partial *@
+                <a asp-action="StockReceivedList" asp-controller="Pharmacist" class="btn btn-primary"> Stock Received List</a>
+                <a asp-action="GetStockOrder" asp-controller="Pharmacist" class="btn btn-primary"> Order List</a>
+
+                <br />
+                <br />
+
+
+                <form asp-action="StockReceived" method="post">
+                    <div class="form-group">
+                        <label>Select Stock Order</label>
+                        <select asp-for="StockReceived.StockOrderID" class="form-control" asp-items="ViewBag.Orders">
+                            <option value="">-- Select Order --</option>
+                        </select>
+                        <span asp-validation-for="StockReceived.StockOrderID" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Order Quantity</label>
+                        <input asp-for="StockReceived.OrderQuantity" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Received Quantity</label>
+                        <input asp-for="StockReceived.ReceivedQuantity" class="form-control" />
+                        <span asp-validation-for="StockReceived.ReceivedQuantity" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+    </div>
+</div>
+
+    </div>
+</div>
+

@@ -1,0 +1,72 @@
+﻿@model List<E_PRESCRIBING_SYSTEM.Models.MedsViewModel>
+
+@{
+    ViewData["Title"] = "Received Medication";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary">Pharmacy Medication</h2>
+        <a asp-action="AddMedication" asp-controller="Pharmacist" class="btn btn-outline-primary">
+            <i class="fas fa-plus-circle"></i> Add More Medication
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Schedule</th>
+                            <th>Reorder Level</th>
+                            <th>Stock On Hand</th>
+                            <th>Dosage Form</th>
+                            <th>Active Ingredients & Strength</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Schedule</td>
+                                <td>@item.ReorderLevel</td>
+                                <td>@item.StockOnHand</td>
+                                <td>@item.DosageFormName</td>
+                                <td>
+                                    <ul class="mb-0 ps-3">
+                                        @foreach (var ingredient in item.ActiveIngredients)
+                                        {
+                                            <li>@ingredient</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="EditMedication"
+                                           asp-controller="Pharmacist"
+                                           asp-route-id="@item.PharmacyMedicationId"
+                                           class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a asp-action="DeleteMedication"
+                                           asp-controller="Pharmacist"
+                                           asp-route-id="@item.PharmacyMedicationId"
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Are you sure you want to delete this medication?');">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

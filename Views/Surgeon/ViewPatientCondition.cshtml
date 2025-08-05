@@ -1,0 +1,26 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.PatientCondition>
+@{
+    ViewData["Title"] = "Manage Prescription";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+<h2>Patient Condition</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Condition</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var condition in Model)
+        {
+            <tr>
+                <td>@condition.Condition.Diagnosis</td>
+              @*  <td>@condition.DiagnosisDate.ToString("yyyy-MM-dd")</td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+

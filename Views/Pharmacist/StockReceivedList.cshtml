@@ -1,0 +1,37 @@
+﻿@model List<E_PRESCRIBING_SYSTEM.Models.ReceivedViewModel>
+
+@{
+    ViewData["Title"] = "Received Stock List";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+<h2>Received Stock List</h2>
+<head>
+    <link rel="stylesheet" href="~/css/orderTable.css" />
+</head>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Stock Received ID</th>
+            <th>Medication Name</th>
+            <th>Received Quantity</th>
+            <th>Received Date</th>
+            <th>Order Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StockReceivedID</td>
+                <td>@item.MedicationName</td>
+                <td>@item.ReceivedQuantity</td>
+                <td>@item.ReceivedDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.StockOrderStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("ManageStock", "Pharmacist")" class="btn btn-primary">Back To Manage Stock</a>

@@ -1,0 +1,36 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.StockOrderViewModel
+
+@{
+    ViewData["Title"] = "Edit Order Stock";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Order Stock</h2>
+
+<form asp-action="EditOrderStock" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Medication Name</label>
+        <input asp-for="Name" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="OrderQuantity" class="control-label">Order Quantity</label>
+        <input asp-for="OrderQuantity" class="form-control" />
+        <span asp-validation-for="OrderQuantity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date" class="control-label">Order Date</label>
+        <input asp-for="Date" class="form-control" type="date" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label">Status</label>
+        <select asp-for="Status" class="form-control">
+            <option value="Ordered">Ordered</option>
+            <option value="Pending">Pending</option>
+            <option value="Received">Received</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="GetStock" class="btn btn-secondary">Cancel</a>
+</form>

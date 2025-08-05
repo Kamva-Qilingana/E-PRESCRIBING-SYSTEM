@@ -1,0 +1,131 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.Admission
+
+@{
+    ViewBag.Title = "Create Admission";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<h2>Patient History details: </h2>
+
+<div class="card">
+    <div class="card-header">
+        <h4>Patient Information</h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Patient Name:</strong> @Model.PatientProfile.PatientName</p>
+        <p><strong>ID Number:</strong> @Model.PatientProfile.PatientIDno</p>
+        <p><strong>Contact:</strong> @Model.PatientProfile.PContactNo</p>
+        <p><strong>Email:</strong> @Model.PatientProfile.Email</p>
+        <p><strong>Gender:</strong> @Model.PatientProfile.Gender</p>
+        <p><strong>Date of Birth:</strong> @Model.PatientProfile.DOB.ToString("yyyy-MM-dd")</p>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h4>Admission Information</h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Ward:</strong> @Model.Ward.WardName</p>
+        <p><strong>Date of Admission:</strong> @Model.Date.ToString("yyyy-MM-dd")</p>
+        <p><strong>Status:</strong> @Model.status</p>
+        <p><strong>Created By:</strong> @Model.Username</p>
+        
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h4>Patient Allergies</h4>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.Allergies != null && ViewBag.Allergies.Count > 0)
+        {
+            <ul>
+              @*   @foreach (var allergy in ViewBag.Allergies)
+                {
+                    <li>@allergy.AllergyDescription </li>
+                } *@
+                @foreach (var allergy in ViewBag.Allergies)
+                {
+                    <li>
+                        <strong>Allergy:</strong> @allergy.AllergyDescription <br />
+                        <strong>Active Ingredient:</strong> @allergy.ActiveIngredients.ActiveIngredientsName
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No allergies recorded.</p>
+        }
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h4>Patient Conditions</h4>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.Conditions != null && ViewBag.Conditions.Count > 0)
+        {
+            <ul>
+                @foreach (var condition in ViewBag.Conditions)
+                {
+                    <li>
+                        <strong>Condition:</strong> @condition.Condition.Diagnosis <br />
+                        <strong>Diagnosis Date:</strong> @condition.DiagnosisDate.ToString("yyyy-MM-dd")
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No conditions recorded.</p>
+        }
+    </div>
+</div>
+<div class="card mt-3">
+    <div class="card-header">
+        <h4>Vital Signs</h4>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.VitalSigns != null && ViewBag.VitalSigns.Count > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Recorded By</th>
+                        <th>Recorded At</th>
+                        <th>Body Temperature (°C)</th>
+                        <th>Heart Rate (BPM)</th>
+                        <th>Oxygen Saturation (%)</th>
+                        <th>Height (cm)</th>
+                        <th>Weight (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vital in ViewBag.VitalSigns)
+                    {
+                        <tr>
+                            <td>@vital.Username</td>
+                            <td>@vital.RecordedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@vital.BodyTemperature</td>
+                            <td>@vital.HeartRate</td>
+                            <td>@vital.BloodOxygenSaturation</td>
+                            <td>@vital.Height</td>
+                            <td>@vital.Weight</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No vital signs recorded.</p>
+        }
+    </div>
+</div>
+
+
+<a asp-action="AdmissionList" asp-controller="Nurse" class="btn btn-secondary mt-3">Back to List</a>

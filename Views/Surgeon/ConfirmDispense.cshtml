@@ -1,0 +1,23 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Confirm Dispense";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+
+
+<h2>Warning: Allergy Detected</h2>
+
+<p>@ViewBag.AllergyWarning</p>
+
+<form asp-action="DispenseMedication" method="post">
+    <input type="hidden" name="prescriptionId" value="@ViewBag.PrescriptionId" />
+    <input type="hidden" name="quantity" value="@ViewBag.Quantity" />
+
+    <p>Do you want to proceed with dispensing the medication?</p>
+
+    <button type="submit" name="proceed" value="true" class="btn btn-success">Yes, Proceed</button>
+    <button type="submit" name="proceed" value="false" class="btn btn-danger">No, Cancel</button>
+
+</form>

@@ -1,0 +1,69 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.PharmacyMedication
+
+@{
+    ViewBag.Title = "Edit Medication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Medication</h2>
+
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<br/>
+<br/>
+<br/>
+
+<form asp-action="EditMedication" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Schedule" class="control-label">Schedule</label>
+        <input asp-for="Schedule" class="form-control" />
+        <span asp-validation-for="Schedule" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReorderLevel" class="control-label">Reorder Level</label>
+        <input asp-for="ReorderLevel" class="form-control" />
+        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StockOnHand" class="control-label">Stock On Hand</label>
+        <input asp-for="StockOnHand" class="form-control" />
+        <span asp-validation-for="StockOnHand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DosageFormID" class="control-label">Dosage Form</label>
+        <select asp-for="DosageFormID" class="form-control" asp-items="ViewBag.DosageFormID"></select>
+        <span asp-validation-for="DosageFormID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Active Ingredients</label>
+        @for (int i = 0; i < 5; i++) // Allow a certain number of active ingredients, or use your logic here
+        {
+            <div>
+                <select name="selectedIngredients" class="form-control" asp-items="ViewBag.ActiveIngredientsID"></select>
+                <input type="text" name="ingredientStrengths" placeholder="Strength" class="form-control" />
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="MedicationList" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,24 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.Surgery
+@{
+    ViewBag.Title = "Scheduled Surgeries";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml"; // Adjust according to your layout
+}
+
+<h2>Are you sure you want to delete this surgery?</h2>
+
+<div>
+    <h4>Surgery</h4>
+    <div>
+        <p>Patient: @Model.PatientProfile.PatientIDno</p>
+        <p>Theatre: @Model.Theatre.TheatreName</p>
+      @*   <p>Treatment: @Model.TreatmentCode.Description</p> *@
+        <p>Surgery Date: @Model.SurgeryDate.ToString("yyyy-MM-dd")</p>
+        <p>Time Slot: @Model.TimeSlot</p>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="SurgeryID" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

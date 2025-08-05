@@ -1,0 +1,22 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.DosageForm>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var med in Model)
+    {
+        <tr>
+            <td>@med.DosageFormID</td>
+            <td>@med.DosageFormName</td>
+            <td>
+                <a asp-controller="Pharmacist" asp-action="Update" asp-route-id="@med.DosageFormID">Update</a>
+                <a asp-controller="Pharmacist" asp-action="Delete" asp-route-id="@med.DosageFormID">Delete</a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="3">No results found.</td>
+    </tr>
+}

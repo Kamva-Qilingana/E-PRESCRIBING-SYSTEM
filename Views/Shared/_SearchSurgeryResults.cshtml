@@ -1,0 +1,76 @@
+﻿@* @model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Surgery>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Theatre</th>
+            <th>Treatment</th>
+            <th>Surgery Date</th>
+            <th>Time Slot</th>
+            <th>Created By</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var surgery in Model)
+        {
+            <tr>
+                <td>@surgery.PatientProfile.PatientIDno</td>
+                <td>@surgery.PatientProfile.PatientName @surgery.PatientProfile.PSurname</td>
+                <td>@surgery.Theatre.TheatreName</td>
+                <td>@surgery.TreatmentCode.Description</td>
+                <td>@surgery.SurgeryDate.ToString("yyyy-MM-dd")</td>
+                <td>@surgery.TimeSlot</td>
+                <td>@surgery.CreatedBy</td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@
+
+ @model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Surgery>
+@{
+    ViewBag.Title = "Create Surgery";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml"; // Adjust as necessary
+}
+
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Theatre</th>
+                <th>Treatment</th>
+                <th>Surgery Date</th>
+                <th>Time Slot</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var surgery in Model)
+            {
+                <tr>
+                    <td>@surgery.PatientProfile.PatientIDno</td>
+                    <td>@surgery.PatientProfile.PatientName @surgery.PatientProfile.PSurname</td>
+                    <td>@surgery.Theatre.TheatreName</td>
+                   @*  <td>@surgery.TreatmentCode.Description/td> *@
+                    <td>@surgery.SurgeryDate.ToString("yyyy-MM-dd")</td>
+                    <td>@surgery.TimeSlot</td>
+                    <td>@surgery.CreatedBy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No surgeries found for the given Patient ID.</p>
+    <div>
+        @Html.ActionLink("Back to List", "Index", "Surgery", null, new { @class = "btn btn-secondary" })
+    </div>
+}
+

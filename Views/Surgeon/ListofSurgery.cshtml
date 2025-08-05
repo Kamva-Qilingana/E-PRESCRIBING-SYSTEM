@@ -1,0 +1,37 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.Surgery>
+
+@{
+    ViewBag.Title = "Surgery List";
+}
+
+<h2>Surgery List</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Theatre</th>
+            <th>Treatment Code</th>
+            <th>Surgery Date</th>
+            <th>Time Slot</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var surgery in Model)
+        {
+            <tr>
+                <td>@surgery.PatientProfile.PatientIDno</td>
+                <td>@surgery.PatientProfile.PatientName</td>
+                <td>@surgery.Theatre.TheatreName</td>
+              @*  <td>@surgery.TreatmentCode.Description</td> *@
+                <td>@surgery.SurgeryDate.ToString("yyyy-MM-dd")</td>
+                <td>@surgery.TimeSlot</td>
+                <td>@surgery.CreatedBy</td>
+                <td>@surgery.CreatedDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,15 @@
+﻿@model NewPrescriptionViewModel
+@{
+    ViewData["Title"] = "Add Prescription";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+<div class="alert alert-warning">
+    <strong>Warning!</strong> @TempData["AllergyAlert"]
+</div>
+
+<p>Would you like to proceed with prescribing this medication?</p>
+
+<form method="post" asp-action="ConfirmPrescription">
+    <button type="submit" class="btn btn-danger" name="confirm" value="false">Cancel</button>
+    <button type="submit" class="btn btn-success" name="confirm" value="true">Proceed</button>
+</form>

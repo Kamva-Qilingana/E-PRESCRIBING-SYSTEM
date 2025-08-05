@@ -1,0 +1,14 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.Condition
+
+<div class="modal-content">
+    <h4>Are you sure you want to delete the condition: @Model.Diagnosis?</h4>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.ConditionID" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+        </div>
+    </form>
+</div>

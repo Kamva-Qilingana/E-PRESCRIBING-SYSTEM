@@ -1,0 +1,74 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.PatientMedication
+
+@{
+    ViewBag.Title = "Add Patient Medication";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml";
+}
+
+<h2>Add Patient Medication</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Patient Medication</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PatientProfileId, "Patient Profile", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.PatientProfileId, ViewBag.PatientProfileId as SelectList, "Select a Patient", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PatientProfileId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PharmacyMedicationId, "Pharmacy Medication", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.PharmacyMedicationId, ViewBag.PharmacyMedicationId as SelectList, "Select Medication", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PharmacyMedicationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Quantity, "Quantity", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Instructions, "Instructions", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Instructions, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Instructions, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Medication" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "PatientMedication")
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#addRow').click(function () {
+            var newRow = $('.form-horizontal .form-group:first').clone();
+            newRow.find('input').val(''); // Clear the inputs
+            newRow.find('select').val(''); // Clear dropdowns
+            $('.form-horizontal').append(newRow);
+        });
+    });
+</script>
+
+<button id="addRow" class="btn btn-primary">Add Another Medication</button>
+
+

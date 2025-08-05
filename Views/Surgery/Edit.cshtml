@@ -1,0 +1,44 @@
+﻿ @model E_PRESCRIBING_SYSTEM.Models.SurgeryViewModel
+@{
+    ViewBag.Title = "Create Surgery";
+    Layout = "~/Views/Shared/_SurgeonLayout.cshtml"; // Adjust as necessary
+}
+
+<h2>Edit Surgery</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="SurgeryID" />
+
+    <div class="form-group">
+        <label asp-for="PatientProfileId"></label>
+        <select asp-for="PatientProfileId" class="form-control" asp-items="@(new SelectList(Model.Patients, "PatientProfileId", "PatientIDno"))"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TheatreID"></label>
+        <select asp-for="TheatreID" class="form-control" asp-items="@(new SelectList(Model.Theatres, "TheatreID", "TheatreName"))"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedTreatmentIDs"></label>
+        <select asp-for="SelectedTreatmentIDs" class="form-control" asp-items="@(new SelectList(Model.Treatments, "TreatmentID", "Description"))"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SurgeryDate"></label>
+        <input asp-for="SurgeryDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TimeSlot"></label>
+        <input asp-for="TimeSlot" class="form-control" type="text" />
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+   @*  <button type="submit" class="btn btn-primary">Save</button> *@
+    <a asp-action="Index" class="btn btn-danger">Cancel</a>
+</form>
+
+@* <div>
+    @Html.ActionLink("Back to List", "Index", "Surgery", null, new { @class = "btn btn-secondary" })
+</div> *@

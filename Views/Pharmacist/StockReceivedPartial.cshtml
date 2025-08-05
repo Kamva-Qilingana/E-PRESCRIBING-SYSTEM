@@ -1,0 +1,30 @@
+﻿@model E_PRESCRIBING_SYSTEM.Models.CombinedStockViewModel
+
+@{
+    ViewData["Title"] = "Manage Medication Stock";
+    Layout = "~/Views/Shared/_PharmacistLayout.cshtml";
+}
+
+
+<form asp-action="StockReceived" method="post">
+    <div class="form-group">
+        <label for="StockOrderID">Select Stock Order</label>
+        <select asp-for="StockReceived.StockOrderID" class="form-control" asp-items="ViewBag.Orders">
+            <option value="">-- Select Order --</option>
+        </select>
+        <span asp-validation-for="StockReceived.StockOrderID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="OrderQuantity">Order Quantity</label>
+        <input asp-for="StockReceived.OrderQuantity" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="ReceivedQuantity">Received Quantity</label>
+        <input asp-for="StockReceived.ReceivedQuantity" class="form-control" />
+        <span asp-validation-for="StockReceived.ReceivedQuantity" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

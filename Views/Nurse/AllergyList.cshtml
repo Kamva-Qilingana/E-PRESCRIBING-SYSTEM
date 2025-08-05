@@ -1,0 +1,25 @@
+﻿@model IEnumerable<E_PRESCRIBING_SYSTEM.Models.PatientAllergy>
+@{
+    ViewBag.Title = "Patient Allergies";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml"; // Adjust as necessary
+}
+
+<h2>Allergies for @Model.First().PatientProfile.PatientName @Model.First().PatientProfile.PSurname</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Allergy Description</th>
+            <th>Active Ingredient</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var allergy in Model)
+        {
+            <tr>
+                <td>@allergy.AllergyDescription</td>
+                <td>@allergy.ActiveIngredients.ActiveIngredientsName</td>
+            </tr>
+        }
+    </tbody>
+</table>

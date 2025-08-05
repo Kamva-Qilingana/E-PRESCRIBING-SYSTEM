@@ -1,0 +1,77 @@
+﻿@* @model E_PRESCRIBING_SYSTEM.Models.ChronicMedication
+@{
+    ViewData["Title"] = "AddMedication";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/AddMedicationScreen.css" />
+</head>
+<h2>Add Chronic Medication</h2>
+
+<form asp-action="AddChronicMedication" method="post">
+    <div class="form-group">
+        <label for="ChronicMedicationName">Chronic Medication Name</label>
+        <input type="text" id="ChronicMedicationName" name="ChronicMedicationName" required>
+    </div>
+
+    <div class="form-group">
+        <label for="DosageForm">Dosage Form</label>
+        <select asp-for="DosageFormID" asp-items="ViewBag.DosageFormID" required>
+            <option selected disabled>Select Dosage Form</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="activeIngredients">Active Ingredients</label>
+        <div id="activeIngredientsContainer">
+            <div class="ingredient-row">
+                <select class="form-control" name="selectedIngredients" required>
+                    <option selected disabled>Select Active Ingredient</option>
+                    @if (ViewBag.ActiveIngredientsID != null)
+                    {
+                        foreach (var item in ViewBag.ActiveIngredientsID)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <input type="text" name="ingredientStrengths" placeholder="Strength (e.g., 500mg)" required>
+                <button type="button" onclick="removeIngredient(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addIngredient()">Add Another Ingredient</button>
+    </div>
+
+    <div class="form-group">
+        <label for="Schedule">Schedule</label>
+        <select id="Schedule" name="Schedule" required>
+            <option value="" disabled selected>Select Schedule</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add Chronic Medication</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function addIngredient() {
+            let firstRow = $('#activeIngredientsContainer .ingredient-row:first').clone();
+            firstRow.find('input').val('');
+            firstRow.find('select').val('');
+            $('#activeIngredientsContainer').append(firstRow);
+        }
+
+        function removeIngredient(button) {
+            $(button).closest('.ingredient-row').remove();
+        }
+    </script>
+}
+ *@
