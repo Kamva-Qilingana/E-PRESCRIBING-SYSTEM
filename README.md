@@ -54,3 +54,14 @@ The **E-Prescribing System** is a web application built using **ASP.NET MVC** th
 1. Clone the repository:
    ```bash
    git clone https://github.com/Kamva-Qilingana/E-PRESCRIBING-SYSTEM.git
+  
+
+   
+## Author
+## Kamva Qilingana
+
+ ## Aspiring Full-Stack Developer
+
+## Email: qilinganakamva@gmail.com
+
+## LinkedIn: www.linkedin.com/in/kamva-qilingana-7a546527a
